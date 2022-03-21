@@ -28,7 +28,7 @@ const ItemsAdd = () => {
     return (
         <>
             <Navigation showLogout={true} showNavbar={true} page="items" />
-            <div className="m-4 ps-3 pt-1 d-flex gap-3 pe-5">
+            <div className="m-4 ps-3 pt-1 d-flex gap-3">
                 <ItemAddSidebar />
                 <div className="mx-5 col-10">
                     <ItemsAddForm products={products} setProducts={setProducts} />

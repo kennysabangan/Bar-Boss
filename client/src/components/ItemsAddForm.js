@@ -39,7 +39,7 @@ const ItemsAddForm = (props) => {
     }
 
     return (
-        <form onSubmit={addItem} className="border border-dark border-3 py-4 px-5 mt-4">
+        <form onSubmit={addItem} className="border border-dark border-3 py-3 px-5 mt-4">
             <div className="mb-2">
                 {errors.name ? <div className="text-danger ms-4">* {errors.name.message}</div> : null}
                 {errors.category ? <div className="text-danger ms-4">* {errors.category.message}</div> : null}
@@ -52,29 +52,29 @@ const ItemsAddForm = (props) => {
             <div className="form-row d-flex gap-5">
                 <div className="form-group col">
                     <label>Product Name</label>
-                    <input className="form-control" value={name} onChange={e => setName(e.target.value)}/>
+                    <input className="form-control" value={name} onChange={e => setName(e.target.value)} placeholder='"Absolut Mandarin, Pineapple Juice"'/>
                 </div>
                 <div className="form-group col">
                     <label>Product Category</label>
-                    <input className="form-control" value={category} onChange={e => setCategory(e.target.value)}/>
+                    <input className="form-control" value={category} onChange={e => setCategory(e.target.value)} placeholder='"Liquor, Non-Alcoholic"'/>
                 </div>
                 <div className="form-group col">
                     <label>Product Type</label>
-                    <input className="form-control" value={type} onChange={e => setType(e.target.value)}/>
+                    <input className="form-control" value={type} onChange={e => setType(e.target.value)} placeholder='"Vodka, Mixer"'/>
                 </div>
             </div>
-            <div className="mt-3 form-row d-flex gap-5">
+            <div className="mt-3 form-row d-flex gap-5 mb-3">
                 <div className="form-group col-1">
                     <label>Unit Qty</label>
-                    <input type="number" className="form-control" value={unitQty} onChange={e => setUnitQty(e.target.value)}/>
+                    <input type="number" className="form-control" value={unitQty} onChange={e => setUnitQty(e.target.value)} placeholder='"8.4"'/>
                 </div>
                 <div className="form-group col-2">
                     <label>Units</label>
-                    <input className="form-control" value={units} onChange={e => setUnits(e.target.value)}/>
+                    <input className="form-control" value={units} onChange={e => setUnits(e.target.value)} placeholder='"L, oz"'/>
                 </div>
                 <div className="form-group col-3">
                     <label>Container Type</label>
-                    <input className="form-control" value={container} onChange={e => setContainer(e.target.value)}/>
+                    <input className="form-control" value={container} onChange={e => setContainer(e.target.value)} placeholder='"Bottle, Can"'/>
                 </div>
                 <div className="form-group col-2">
                     <label>Price</label>
