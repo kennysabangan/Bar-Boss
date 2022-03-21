@@ -6,7 +6,6 @@ import Navigation from './Navigation';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../App.css';
 import ItemsList from './ItemList';
-import ItemSidebar from './ItemSidebar';
 import ItemsEditSidebar from './ItemsEditSidebar';
 
 const ItemsEdit = () => {

@@ -57,7 +57,7 @@ const InventoryList = () => {
         </thead>
         <tbody>
             { fullInventory.map((item, idx) => (
-                <tr>
+                <tr key={idx}>
                     <td>{item.product.name}</td>
                     <td>{item.product.category}</td>
                     <td>{item.product.type}</td>

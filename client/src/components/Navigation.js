@@ -8,7 +8,7 @@ import '../App.css';
 
 const Navigation = (props) => {
 
-    let { showLogout, showNavbar, page, showDeleteBtn, showTakeInventoryBtn, barId } = props;
+    let { showLogout, showNavbar, page, showDeleteBtn, barId } = props;
 
     const navigate = useNavigate();
 
@@ -24,22 +24,24 @@ const Navigation = (props) => {
             .catch(err => console.log(err))
     }
 
-    const handleTakeInventory = () => {
-    }
-
     return (
         <div className="d-flex align-items-center justify-content-between m-5 px-5">
             <div className="d-flex gap-5">
+                { showNavbar ?
+                <Link to="/dashboard" className="d-flex gap-2 align-items-center logo">
+                    <FontAwesomeIcon icon={faMartiniGlassCitrus} size="2x" flip="horizontal"/>
+                    <h2 className="mt-2">Bar Boss</h2>
+                </Link> :
                 <Link to="/" className="d-flex gap-2 align-items-center logo">
                     <FontAwesomeIcon icon={faMartiniGlassCitrus} size="2x" flip="horizontal"/>
                     <h2 className="mt-2">Bar Boss</h2>
-                </Link>
+                </Link> }
                 { showNavbar &&
                     <div className="ms-5">
                         <nav className="d-flex nav border border-2 border-dark">
                             <Link to="/dashboard" className={`p-3 px-5 nav-link ${page == "dashboard" ? "selected" : null}`}>Inventory</Link>
                             <Link to="/items" className={`p-3 px-5 nav-link ${page == "items" ? "selected" : null}`}>Add/Edit Items</Link>
-                            {/* <Link to="#" className={`p-3 px-5 nav-link ${page == "recipes" ? "selected" : null}`}>Recipes</Link> */}
+                            {/* // TODO: RECIPES // <Link to="#" className={`p-3 px-5 nav-link ${page == "recipes" ? "selected" : null}`}>Recipes</Link> */}
                         </nav>
                     </div>
                 }
