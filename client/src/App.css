@@ -24,9 +24,10 @@ nav {
   border-right: 2px solid black;
 }
 
+/* TODO: ADD BACK WHEN RECIPES SECTION IS MADE
 .nav-link:last-child {
   border-left: 2px solid black;
-}
+} */
 
 .selected {
   background-color: rgb(149,188,242);
