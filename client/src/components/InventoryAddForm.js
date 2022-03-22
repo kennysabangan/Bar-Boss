@@ -7,7 +7,7 @@ const InventoryAddForm = (props) => {
     const [ errors, setErrors ] = useState([]);
 
     const [ products, setProducts ] = useState([]);
-    const { barId } = props;
+    const { barId, update, setUpdate } = props;
 
     function addToInventory(e) {
         e.preventDefault();
@@ -16,16 +16,12 @@ const InventoryAddForm = (props) => {
             itemId: itemId,
             quantity: quantity,
         }, { withCredentials: true })
-            .then((res) => {
-                refreshPage();
+            .then(() => {
+                setUpdate(!update);
                 setQuantity(1);
                 setErrors([]);
             })
             .catch(err => setErrors(err.response.data.errors))
-    }
-
-    function refreshPage() {
-        window.location.reload(false);
     }
 
     useEffect(() => {

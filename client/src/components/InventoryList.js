@@ -11,7 +11,7 @@ const InventoryList = () => {
                 const data = res.data;
                 var concatInventories = []
 
-                data.map((area, idx) => {
+                data.map((area) => {
                     for (let i = 0; i < area.inventory.length; i++) {
                         if (isProductUnique(concatInventories, area.inventory[i])) {
                             concatInventories.push(area.inventory[i]);

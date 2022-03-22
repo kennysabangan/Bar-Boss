@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
-import Navigation from './Navigation';
+import { useNavigate, useParams } from 'react-router-dom';
+import Navigation from '../components/Navigation';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../App.css';
-import ItemsList from './ItemList';
-import ItemAddSidebar from './ItemsAddSidebar';
-import ItemsAddForm from './ItemsAddForm';
+import ItemsList from '../components/ItemList';
+import ItemsEditSidebar from '../components/ItemsEditSidebar';
 
-const ItemsAdd = () => {
+const ItemsEdit = () => {
 
     const [ products, setProducts ] = useState([]);
+    const [ update, setUpdate ] = useState(false);
+    const { id } = useParams();
 
     // If user is not logged in, redirect to Registration Page
     const navigate = useNavigate();
@@ -23,20 +24,21 @@ const ItemsAdd = () => {
         axios.get('http://localhost:8000/api/products', { withCredentials: true })
             .then((res) => setProducts(res.data))
             .catch((err) => console.log(err))
-    }, [])
+    }, [update])
 
     return (
         <>
             <Navigation showLogout={true} showNavbar={true} page="items" />
-            <div className="m-4 ps-3 pt-1 d-flex gap-3">
-                <ItemAddSidebar />
-                <div className="mx-5 col-10">
-                    <ItemsAddForm products={products} setProducts={setProducts} />
-                    <ItemsList products={products} setProducts={setProducts} />
+            <div className="m-4 ps-3 pt-1 d-flex gap-3 pe-5 w-100">
+                <div className="col">
+                    <ItemsEditSidebar />
+                </div>
+                <div className="ms-4 me-5 col-10 ps-5">
+                    <ItemsList products={products} setProducts={setProducts} showActions={true} productId={id} update={update} setUpdate={setUpdate} />
                 </div>
             </div>
         </>
     )
 }
 
-export default ItemsAdd;
+export default ItemsEdit;

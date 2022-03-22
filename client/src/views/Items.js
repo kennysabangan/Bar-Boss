@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import Navigation from './Navigation';
+import Navigation from '../components/Navigation';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../App.css';
-import ItemsList from './ItemList';
-import ItemSidebar from './ItemSidebar';
+import ItemsList from '../components/ItemList';
+import ItemSidebar from '../components/ItemSidebar';
 
 const Items = () => {
 

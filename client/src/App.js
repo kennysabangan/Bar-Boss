@@ -1,15 +1,14 @@
-import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Register from './views/Register';
+import Login from './views/Login';
+import Dashboard from './views/Dashboard';
+import Items from './views/Items';
+import ItemsAdd from './views/ItemsAdd';
+import ItemsEdit from './views/ItemsEdit';
+import BarArea from './views/BarArea';
+import BarAreaEdit from './views/BarAreaEdit';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Register from './components/Register';
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
-import Items from './components/Items';
-import ItemsAdd from './components/ItemsAdd';
-import ItemsEdit from './components/ItemsEdit';
-import BarArea from './components/BarArea';
-import BarAreaEdit from './components/BarAreaEdit';
 
 function App() {
   return (

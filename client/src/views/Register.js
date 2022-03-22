@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.css';
-import Navigation from './Navigation';
+import Navigation from '../components/Navigation';
 import Cookies from 'js-cookie';
+import 'bootstrap/dist/css/bootstrap.css';
 
 const Register = () => {
 

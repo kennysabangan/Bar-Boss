@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import Navigation from './Navigation';
+import Navigation from '../components/Navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import 'bootstrap/dist/css/bootstrap.css';
 import '../App.css';
-import InventoryAddForm from './InventoryAddForm';
+import InventoryAddForm from '../components/InventoryAddForm';
 
 const BarAreaEdit = () => {
 

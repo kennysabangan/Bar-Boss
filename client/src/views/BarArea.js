@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import Navigation from './Navigation';
+import Navigation from '../components/Navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import 'bootstrap/dist/css/bootstrap.css';
 import '../App.css';
-import InventoryAddForm from './InventoryAddForm';
+import InventoryAddForm from '../components/InventoryAddForm';
 
 const BarArea = () => {
 
     const [ locations, setLocations ] = useState([]);
     const [ inventory, setInventory ] = useState([]);
     const { id } = useParams();
+    const [ update, setUpdate ] = useState(false);
 
     // If user is not logged in, redirect to Registration Page
     const navigate = useNavigate();
@@ -27,10 +28,38 @@ const BarArea = () => {
 
         axios.get('http://localhost:8000/api/locations/' + id)
             .then(res => {
-                setInventory(res.data.inventory)
+                var data = res.data.inventory;
+                var concatInventory = []
+
+                data.map((item) => {
+                    if (isProductUnique(concatInventory, item)) {
+                        concatInventory.push(item);
+                    } else {
+                        findProductAddQuantity(concatInventory, item);
+                    }
+                })
+                setInventory([...concatInventory])
             })
 
-    }, [id])
+    }, [id, update])
+
+    function isProductUnique(arr, item) {
+        let unique = true;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].product._id == item.product._id) {
+                return false;
+            }
+        }
+        return unique
+    }
+
+    function findProductAddQuantity(arr, item) {
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].product._id == item.product._id) {
+                arr[i].quantity += item.quantity
+            }
+        }
+    }
 
     return (
         <>
@@ -55,7 +84,7 @@ const BarArea = () => {
                 </div>
                 <div className="col-10 ps-2 pe-5 me-5">
 
-                    <InventoryAddForm barId={id} />
+                    <InventoryAddForm barId={id} update={update} setUpdate={setUpdate} />
 
                     <table className="table table-bordered border-dark mx-5 mt-4 text-center align-middle" style={{ border: "3px solid black" }}>
                         <thead>
