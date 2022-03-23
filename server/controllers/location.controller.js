@@ -28,8 +28,8 @@ module.exports = {
     },
     editItem: (req, res) => {
         Location.findOneAndUpdate(
-            {"inventory._id": req.params.inventoryId },
-            {$set: {"inventory.$[select].quantity": req.body.quantity } },
+            { "inventory._id": req.params.inventoryId },
+            { $set: {"inventory.$[select].quantity": req.body.quantity } },
             {
                 arrayFilters: [{ "select._id": req.params.inventoryId }],
                 new: true
