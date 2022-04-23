@@ -2,7 +2,7 @@
 Inventory control system intended for bar owners / managers to easily store and calculate product inventory and costs.
 
 ## Setup ##
-* Make sure MongoDB is installed in your computer: https://www.mongodb.com/try/download/community (Free Version)
+* Make sure MongoDB is installed in your computer: https://www.mongodb.com/try/download/community
 * Request the ".env" file required for this application from me at: ksabangan121@gmail.com
 
 ## Installation ##
