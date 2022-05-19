@@ -1,75 +1,194 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import Navigation from '../components/Navigation';
-import InventoryList from '../components/InventoryList';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
-import 'bootstrap/dist/css/bootstrap.css';
-import '../App.css';
+import { useNavigate } from 'react-router-dom';
 
-const Dashboard = () => {
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import MuiDrawer from '@mui/material/Drawer';
+import Box from '@mui/material/Box';
+import MuiAppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Link from '@mui/material/Link';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import Inventory from '../components/Inventory';
+import { MainListItems, SecondaryListItems } from '../components/ListItems';
+import axios from 'axios';
+import Items from './Items';
+import BarArea from './BarArea';
 
-    const [ locations, setLocations ] = useState([]);
-    const [ showAddInput, setShowAddInput ] = useState(false)
-    const [ areaName, setAreaName ] = useState("");
+function Copyright(props) {
+    return (
+      <Typography variant="body2" color="text.secondary" align="center" {...props}>
+        {'Copyright © '}
+        <Link color="inherit" href="#">
+          Bar Boss
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    );
+  }
 
-    // If user is not logged in, redirect to Registration Page
+  const drawerWidth = 240;
+
+  const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+  })(({ theme, open }) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+      marginLeft: drawerWidth,
+      width: `calc(100% - ${drawerWidth}px)`,
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    }),
+  }));
+
+  const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+    ({ theme, open }) => ({
+      '& .MuiDrawer-paper': {
+        position: 'relative',
+        whiteSpace: 'nowrap',
+        width: drawerWidth,
+        transition: theme.transitions.create('width', {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+        boxSizing: 'border-box',
+        ...(!open && {
+          overflowX: 'hidden',
+          transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
+          width: theme.spacing(7),
+          [theme.breakpoints.up('sm')]: {
+            width: theme.spacing(9),
+          },
+        }),
+      },
+    }),
+  );
+
+const mdTheme = createTheme();
+
+const Dashboard = (props) => {
+    const [open, setOpen] = useState(true);
+    const [currentLocation, setCurrentLocation] = useState({});
     const navigate = useNavigate();
+    const pageId = useParams();
+    const { page } = props;
+    console.log(page);
+
+    const toggleDrawer = () => setOpen(!open);
+
     useEffect(() => {
-        if (!Cookies.get('usertoken')) {
-            navigate('/');
-        }
+      // If user is not logged in, send them to Login/Registration
+      if (!Cookies.get('usertoken')) {
+          navigate('/');
+      }
 
-        axios.get('http://localhost:8000/api/locations')
-        .then(res => {
-            setLocations(res.data)
-        })
-        .catch(err => console.log(err))
-    }, [])
+      // Dashboard: Retrieve Current Bar Area
+      if (page === 'Dashboard') {
+        axios.get(`http://localhost:8000/api/locations/${pageId.id}`)
+          .then(res => setCurrentLocation(res.data))
+          .catch(err => console.log(err));
+      }
 
-    function refreshPage() {
-        window.location.reload(false);
-    }
-
-    function addArea() {
-        axios.post('http://localhost:8000/api/locations/create', { name: areaName })
-            .then(res => {
-                refreshPage();
-            })
-            .catch(err => console.log(err))
-    }
+    }, [pageId])
 
     return (
-        <>
-            <Navigation showLogout={true} showNavbar={true} page="dashboard" />
-            <div className="m-4 ps-3 pt-1 d-flex">
-                <div className="col d-flex flex-column">
-                    <h6 className="ms-5 my-4 py-2 border border-2 border-dark rounded text-center bar-area">Bar Areas</h6>
-                    <Link to="/dashboard" className="row d-flex ms-5 btn">
-                        <div className="col-2">
-                            <FontAwesomeIcon icon={faAngleRight}/>
-                        </div>
-                        <div className="col-auto">Full Inventory</div>
-                    </Link>
-                    { locations && locations.map((location, idx) => (
-                        <Link to={`/dashboard/${location._id}`} key={idx} className="row d-flex ms-5 btn">
-                            <div className="col-2">
-                            </div>
-                            <div className="col-auto">{location.areaName}</div>
-                        </Link>
-                    ))}
-                    { showAddInput && <input className="ms-5 mt-3 text-center" value={areaName} onChange={e => setAreaName(e.target.value)} placeholder="ex: Storage, Front Bar"/>}
-                    { !showAddInput ? <button onClick={() => setShowAddInput(true)} className="btn btn-secondary ms-5 mt-3">Add Area</button>
-                        : <button onClick={addArea} className="btn btn-dark ms-5 mt-2">Save Area</button>}
-                </div>
-                <div className="col-10 ps-2 pe-4 me-5">
-                    <InventoryList />
-                </div>
-            </div>
-        </>
-    )
+      <ThemeProvider theme={mdTheme}>
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
+          <AppBar position="absolute" open={open}>
+            <Toolbar
+              sx={{
+                pr: '24px', // keep right padding when drawer closed
+              }}
+            >
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                onClick={toggleDrawer}
+                sx={{
+                  marginRight: '36px',
+                  ...(open && { display: 'none' }),
+                }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography
+                component="h1"
+                variant="h6"
+                color="inherit"
+                noWrap
+                sx={{ flexGrow: 1 }}
+              >
+                {page}
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Drawer variant="permanent" open={open}>
+            <Toolbar
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                px: [1],
+              }}
+            >
+              <IconButton onClick={toggleDrawer}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </Toolbar>
+            <Divider />
+            <List component="nav">
+              <MainListItems />
+              <Divider sx={{ my: 1 }} />
+              <SecondaryListItems />
+            </List>
+          </Drawer>
+          <Box
+            component="main"
+            sx={{
+              backgroundColor: (theme) =>
+                theme.palette.mode === 'light'
+                  ? theme.palette.grey[100]
+                  : theme.palette.grey[900],
+              flexGrow: 1,
+              height: '100vh',
+              overflow: 'auto',
+            }}
+          >
+            <Toolbar />
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                {page === 'Dashboard' && <Inventory area={currentLocation.areaName}/>}
+                {page === 'Items' && <Items />}
+                {page === 'Bar Area' && <BarArea />}
+              </Paper>
+              <Copyright sx={{ position: 'fixed', bottom: 50, left: "50%" }} />
+            </Container>
+          </Box>
+        </Box>
+      </ThemeProvider>
+    );
 }
 
 export default Dashboard

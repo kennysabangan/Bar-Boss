@@ -7,12 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import InventoryAddForm from '../components/InventoryAddForm';
 
-const BarAreaEdit = () => {
+const BarAreaLegacy = () => {
 
     const [ locations, setLocations ] = useState([]);
     const [ inventory, setInventory ] = useState([]);
-    const [ quantity, setQuantity ] = useState(1);
-    const { id, inventoryId } = useParams();
+    const { id } = useParams();
+    const [ update, setUpdate ] = useState(false);
 
     // If user is not logged in, redirect to Registration Page
     const navigate = useNavigate();
@@ -26,17 +26,37 @@ const BarAreaEdit = () => {
 
         axios.get('http://localhost:8000/api/locations/' + id)
             .then(res => {
-                setInventory(res.data.inventory)
-                const filterForQuantity = res.data.inventory.filter(item => item._id == inventoryId);
-                setQuantity(filterForQuantity[0].quantity);
+                var data = res.data.inventory;
+                var concatInventory = []
+
+                data.map((item) => {
+                    if (isProductUnique(concatInventory, item)) {
+                        concatInventory.push(item);
+                    } else {
+                        findProductAddQuantity(concatInventory, item);
+                    }
+                })
+                setInventory([...concatInventory])
             })
 
-    }, [id, inventoryId])
+    }, [id, update])
 
-    const saveItem = () => {
-        axios.put(`http://localhost:8000/api/locations/${id}/${inventoryId}`, { quantity })
-            .then(navigate(`/dashboard/${id}`))
-            .catch(err => console.log(err))
+    function isProductUnique(arr, item) {
+        let unique = true;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].product._id == item.product._id) {
+                return false;
+            }
+        }
+        return unique
+    }
+
+    function findProductAddQuantity(arr, item) {
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].product._id == item.product._id) {
+                arr[i].quantity += item.quantity
+            }
+        }
     }
 
     return (
@@ -62,7 +82,7 @@ const BarAreaEdit = () => {
                 </div>
                 <div className="col-10 ps-2 pe-5 me-5">
 
-                    <InventoryAddForm barId={id} />
+                    <InventoryAddForm barId={id} update={update} setUpdate={setUpdate} />
 
                     <table className="table table-bordered border-dark mx-5 mt-4 text-center align-middle" style={{ border: "3px solid black" }}>
                         <thead>
@@ -82,16 +102,9 @@ const BarAreaEdit = () => {
                                     <td>{item.product.category}</td>
                                     <td>{item.product.type}</td>
                                     <td>{item.product.unitQty}{item.product.units} {item.product.container}</td>
-                                    <td>
-                                        { inventoryId == item._id ?
-                                            <input className="text-center w-25" value={quantity} onChange={e => setQuantity(e.target.value)} />
-                                            : <span>{item.quantity}</span>
-                                        }
-                                    </td>
+                                    <td>{item.quantity}</td>
                                     <td className="d-flex border-0 justify-content-center">
-                                        { item._id != inventoryId ? <Link to={`/dashboard/${id}/${item._id}`} className="btn btn-primary px-4">Edit</Link>
-                                            : <button onClick={saveItem} className="btn btn-success px-4">Save</button>
-                                        }
+                                        <Link to={`/dashboard/${id}/${item._id}`} className="btn btn-primary px-4 me-4">Edit</Link>
                                     </td>
                                 </tr>
                             ))}
@@ -103,4 +116,4 @@ const BarAreaEdit = () => {
     )
 }
 
-export default BarAreaEdit;
+export default BarAreaLegacy

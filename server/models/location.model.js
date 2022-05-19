@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
-const subSchema = new mongoose.Schema({
-    product: {
+const itemSchema = new mongoose.Schema({
+    productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
     },
     quantity: {
         type: Number,
         min: [0, "Quantity must be a positive number."],
+        required: true,
         default: 0,
     },
   });
@@ -18,7 +19,7 @@ const LocationSchema = new mongoose.Schema({
         trim: true,
         required: [true, "Location name is required."],
     },
-    inventory: [subSchema]
+    inventory: [itemSchema]
 }, { timestamps: true });
 
 

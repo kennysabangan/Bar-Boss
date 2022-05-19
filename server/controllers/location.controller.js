@@ -7,12 +7,12 @@ module.exports = {
             .catch(err => res.status(400).json(err));
     },
     findAllLocations: (req, res) => {
-        Location.find({}).populate('inventory.product')
+        Location.find({}).populate('inventory.productId')
             .then(locations => res.json(locations))
             .catch(err => res.json(err));
     },
     findLocation: (req, res) => {
-        Location.findOne({ _id: req.params.id }).populate('inventory.product')
+        Location.findOne({ _id: req.params.id }).populate('inventory.productId')
             .then(location => res.json(location))
             .catch(err => res.json(err))
     },
@@ -22,7 +22,7 @@ module.exports = {
             .catch(err => res.json(err));
     },
     addItem: (req, res) => {
-        Location.findOneAndUpdate({ _id: req.params.id }, { $push: { inventory: [{product: req.body.itemId, quantity: req.body.quantity}] }}, { new: true, runValidators: true })
+        Location.findOneAndUpdate({ _id: req.params.id }, { $push: { inventory: [{productId: req.body.itemId, quantity: req.body.quantity}] }}, { new: true, runValidators: true })
             .then(updatedLocation => res.json(updatedLocation))
             .catch(err => res.json(err));
     },

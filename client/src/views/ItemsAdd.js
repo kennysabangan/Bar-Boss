@@ -3,8 +3,6 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
-import 'bootstrap/dist/css/bootstrap.css';
-import '../App.css';
 import ItemsList from '../components/ItemList';
 import ItemAddSidebar from '../components/ItemsAddSidebar';
 import ItemsAddForm from '../components/ItemsAddForm';

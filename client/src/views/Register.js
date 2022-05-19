@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navigation from '../components/Navigation';
 import Cookies from 'js-cookie';
-import 'bootstrap/dist/css/bootstrap.css';
 
 const Register = () => {
 
