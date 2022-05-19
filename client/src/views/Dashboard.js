@@ -18,6 +18,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Button } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Inventory from '../components/Inventory';
 import { MainListItems, SecondaryListItems } from '../components/ListItems';
@@ -111,6 +112,11 @@ const Dashboard = (props) => {
 
     }, [pageId])
 
+    const logout = () => {
+      axios.get('http://localhost:8000/api/users/logout', { withCredentials: true })
+      navigate('/')
+    }
+
     return (
       <ThemeProvider theme={mdTheme}>
         <Box sx={{ display: 'flex' }}>
@@ -142,6 +148,10 @@ const Dashboard = (props) => {
               >
                 {page}
               </Typography>
+              <Button
+                color="inherit"
+                onClick={logout}
+                >Logout</Button>
             </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open}>

@@ -7,7 +7,6 @@ import LocalBarIcon from '@mui/icons-material/LocalBar';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AddLocationIcon from '@mui/icons-material/AddLocation';
 import CancelIcon from '@mui/icons-material/Cancel';
-import TransitEnterexitIcon from '@mui/icons-material/TransitEnterexit';
 import { Link } from 'react-router-dom';
 
 export const MainListItems = () => (
@@ -24,11 +23,11 @@ export const MainListItems = () => (
          </ListItemIcon>
          <ListItemText primary="Items List" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton disabled>
          <ListItemIcon>
             <LocalBarIcon />
          </ListItemIcon>
-         <ListItemText primary="Recipes" />
+         <ListItemText secondary="Recipes (Coming Soon)" />
       </ListItemButton>
    </React.Fragment>
 );

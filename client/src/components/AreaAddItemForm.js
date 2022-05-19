@@ -23,24 +23,27 @@ export default function AreaAddItemForm(props) {
 
    const [ products, setProducts ] = useState([]);
    const [ selectedProduct, setSelectedProduct] = useState("");
-   const [ quantity, setQuantity ] = useState();
+   const [ quantity, setQuantity ] = useState(0);
    const { id } = useParams();
-   const { setLocation } = props;
+   const { setLocation, setMounted } = props;
 
    const addToInventory = async e => {
       e.preventDefault();
       if (quantity > 0) {
          const productName = document.querySelector("[aria-labelledby='product-select']").innerHTML;
          const res = await axios.put(`http://localhost:8000/api/locations/${id}/add`, { id, itemId: selectedProduct, quantity })
-         setLocation(res.data)
+         setMounted(false);
+         setLocation(res.data);
          setSelectedProduct("");
-         setQuantity('');
+         setQuantity("");
+         console.log(res.data);
          toast.success(`Successfully added ${quantity} ${productName}!`)
       }
    }
 
    useEffect(async () => {
       const res = await axios.get('http://localhost:8000/api/products')
+
       setProducts(res.data)
    }, [])
 

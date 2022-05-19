@@ -36,6 +36,7 @@ const BarArea = () => {
 
     const [ inventory, setInventory ] = useState([]);
     const [ location, setLocation ] = useState({});
+    const [ mounted, setMounted ] = useState(false);
     const [ cost, setCost ] = useState(0);
     const { id } = useParams();
 
@@ -46,30 +47,34 @@ const BarArea = () => {
           navigate('/');
       }
 
-      axios.get('http://localhost:8000/api/locations/' + id)
-          .then(res => {
-               var data = res.data.inventory;
-               setLocation(res.data);
-               var concatInventory = []
+      if (!mounted) {
+          axios.get('http://localhost:8000/api/locations/' + id)
+              .then(res => {
+                   var data = res.data.inventory;
+                   console.log(res.data.inventory);
+                   setLocation(res.data);
+                   setMounted(true);
+                   var concatInventory = []
 
-               data.map((item) => {
-                  if (isProductUnique(concatInventory, item)) {
-                     concatInventory.push(item);
-                  } else {
-                     findProductAddQuantity(concatInventory, item);
-                  }
-               })
-               setCost(calculateTotalCost(concatInventory))
-               setInventory([...concatInventory])
-          })
+                   data.map((item) => {
+                      if (isProductUnique(concatInventory, item)) {
+                         concatInventory.push(item);
+                      } else {
+                         findProductAddQuantity(concatInventory, item);
+                      }
+                   })
+                   setCost(calculateTotalCost(concatInventory))
+                   setInventory([...concatInventory])
+              })
+      }
 
-  }, [id, inventory])
+  }, [id, location])
 
     return (
     <React.Fragment>
         <Title>{location.areaName}: Inventory</Title>
 
-        <AreaAddItemForm setLocation={setLocation} />
+        <AreaAddItemForm setLocation={setLocation} setMounted={setMounted}/>
 
         <Table size="small" sx={{ mt: 3 }}>
         <TableHead>

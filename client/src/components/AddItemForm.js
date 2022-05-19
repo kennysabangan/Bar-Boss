@@ -22,7 +22,7 @@ export default function AddItemForm(props) {
    const [ units, setUnits ] = useState("");
    const [ container, setContainer ] = useState("");
    const [ price, setPrice ] = useState("");
-   const { products, setProducts } = useState([]);
+   const { products, setProducts, setMounted } = props;
 
    const addItem = (e) => {
       e.preventDefault();
@@ -76,14 +76,14 @@ export default function AddItemForm(props) {
             <TextField required
                size="small"
                label="Category"
-               placeholder='ex: Vodka, Juice'
+               placeholder='ex: Liquor, Mixer'
                value={category}
                onChange={e => setCategory(e.target.value)}
                />
             <TextField required
                size="small"
                label="Type of Product"
-               placeholder='ex: Liquor, Mixer'
+               placeholder='ex: Vodka, Juice'
                value={type}
                onChange={e => setType(e.target.value)}
                />
